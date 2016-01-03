@@ -1,0 +1,26 @@
+Catapult War
+-------------
+- Ide diinspirasi oleh game Battleship jaman dahulu
+
+- Game ini dimainkan oleh 2 player secara bergiliran
+
+- Cara bermain:
+1.Setiap player mempunyai 5 benteng
+2.Kelima benteng tersebut diletakkan di area game seluas 20x20 petak, satu benteng menempati satu petak, 
+3.Player lawan tidak dapat melihat letak benteng kita, begitu juga sebaliknya
+4.Player memilih 1 petak sebanyak 3x pada saat gilirannya(luas petak yang dapat dipilih 
+  dan jumlah kesempatan menggunakan catapult dapat berubah sesuai power-up), setelah semua kesempatan
+  menggunakan catapult habis, maka catapult player tersebut akan menembak petak-petak yang dipilih
+5.Jika petak yang dipilih ternyata ditempati oleh benteng lawan, maka benteng lawan akan hancur
+6.Selain itu terdapat item power-up yang tersebar di area game(secara tersembunyi), jika player memilih
+  petak yang terdapat item power-up, maka catapult player tersebut akan mendapatkan power-up pada gilirannya berikutnya
+7.Player yang dapat menghancukan kelima benteng lawan terlebih dahulu adalah pemenangnya
+
+- Power-up:
+1.Firebomb: luas tembakan catapult bertambah 4 petak(kiri, kanan, atas, bawah dari petak yang dipilih) selama 1 putaran
+2.Crossbomb: luas tembakan catapult bertambah 8 petak(setiap diagonal bertambah 2 petak dari petak yang dipilih) selama 1 putaran
+3.Napalm: luas tembakan catapult bertambah 8 petak(setiap petak di samping petak yang dipilih bertambah 1 petak membentuk persegi) selama 1 putaran
+4.Guillotine: luas tembakan catapult seluas satu area horizontal(20 petak) dari area game selama 1 putaran
+5.Rocket: luas tembakan catapult seluas satu area vertikal(20 petak) dari area game selama 1 putaran
+6.Lucky!: jumlah kesempatan menembak catapult bertambah 1x pada giliran berikutnya
+7.Super Lucky!: jumlah kesempatan menembak catapult bertambah 2x pada giliran berikutnya

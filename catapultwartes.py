@@ -40,7 +40,7 @@ BENTENG = 'benteng'
 NONE = 'none'
 
 POWERUPS = ((FIREBOMB, 5), (CROSSBOMB, 5), (NAPALM, 3), (GUILLOTINE, 2), (ROCKET, 2), (LUCKY, 5), (SUPERLUCKY, 3))
-
+player1 = 5
 def main():
     global FPSCLOCK, DISPLAYSURF
     pygame.init()
@@ -56,12 +56,12 @@ def main():
 
     #DISPLAYSURF.fill(BGCOLOR)
     #startGameAnimation(mainBoard)
-
+    gameReady = False
+    takeshi = 5
     while True:
+        playerpu = ''
         turnLeft = 3
         mouseClicked = False
-        gameReady = False
-        takeshi = 5
         DISPLAYSURF.fill(BGCOLOR)
         drawBoard(mainBoard, revealedBoxes)
 
@@ -81,7 +81,7 @@ def main():
         		if mainBoard[boxx][boxy] != 'benteng' and mouseClicked:
         			mainBoard = bikinBenteng(mainBoard, boxx, boxy)
         			takeshi -+ 1
-        	if takeshi == 0 
+        	if takeshi == 0: 
         		gameReady = True
 
 
@@ -93,7 +93,29 @@ def main():
             if not revealedBoxes[boxx][boxy] and mouseClicked:
                 revealBoxesAnimation(mainBoard, [(boxx, boxy)])
                 revealedBoxes[boxx][boxy] = True # set the box as "revealed"
-                if firstSelection == None: # the current box was the first box clicked
+                if mainBoard[boxx][boxy] == 'none':
+                    a = 5
+                elif mainBoard[boxx][boxy] == 'benteng':
+                        player1 -= 1
+                else:
+                    playerpu = mainBoard[boxx][boxy]
+            if player1 == 0:
+                gameWonAnimation(mainBoard)
+                pygame.time.wait(2000)
+
+                        # Reset the board
+                mainBoard = getRandomizedBoard()
+                revealedBoxes = generateRevealedBoxesData(False)
+
+                # Show the fully unrevealed board for a second.
+                drawBoard(mainBoard, revealedBoxes)
+                pygame.display.update()
+                pygame.time.wait(1000)
+
+                # Replay the start game animation.
+                startGameAnimation(mainBoard)
+
+                """if firstSelection == None: # the current box was the first box clicked
                     firstSelection = (boxx, boxy)
                 else: # the current box was the second box clicked
                     # Check if there is a match between the two icons.
@@ -122,7 +144,7 @@ def main():
                         # Replay the start game animation.
                         startGameAnimation(mainBoard)
                     firstSelection = None # reset firstSelection variable
-
+                """
         # Redraw the screen and wait a clock tick.
         pygame.display.update()
         FPSCLOCK.tick(FPS)
@@ -141,7 +163,7 @@ def bikinBenteng(board, boxx, boxy):
     return board
 
 def getRandomizedBoard():
-	board = []
+    board = []
     for x in range(BOARDWIDTH):
         column = []
         for y in range(BOARDHEIGHT):

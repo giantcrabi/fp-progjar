@@ -40,7 +40,6 @@ BENTENG = 'benteng'
 NONE = 'none'
 
 POWERUPS = ((FIREBOMB, 5), (CROSSBOMB, 5), (NAPALM, 3), (GUILLOTINE, 2), (ROCKET, 2), (LUCKY, 5), (SUPERLUCKY, 3))
-player1 = 5
 def main():
     global FPSCLOCK, DISPLAYSURF
     pygame.init()
@@ -51,6 +50,7 @@ def main():
     mousey = 0 #membaca posisi y cursor mouse pada surface
     pygame.display.set_caption('Catapult War')
 
+    player1 = 5
     mainBoard = getRandomizedBoard()
     revealedBoxes = generateRevealedBoxesData(False)
 
@@ -59,6 +59,7 @@ def main():
     gameReady = False
     takeshi = 5
     while True:
+        turn = 0
         playerpu = ''
         turnLeft = 3
         mouseClicked = False
@@ -74,15 +75,16 @@ def main():
             elif event.type == MOUSEBUTTONUP:
                 mousex, mousey = event.pos
                 mouseClicked = True
-        
-        while not gameReady:
-        	boxx, boxy = getBoxAtPixel(mousex, mousey)
-        	if boxx != None and boxy != None:
-        		if mainBoard[boxx][boxy] != 'benteng' and mouseClicked:
-        			mainBoard = bikinBenteng(mainBoard, boxx, boxy)
-        			takeshi -+ 1
-        	if takeshi == 0: 
-        		gameReady = True
+
+        if(turn != 0):
+            while not gameReady:
+        	   boxx, boxy = getBoxAtPixel(mousex, mousey)
+        	   if boxx != None and boxy != None:
+        		  if mainBoard[boxx][boxy] != 'benteng' and mouseClicked:
+        			 mainBoard = bikinBenteng(mainBoard, boxx, boxy)
+        			 takeshi -= 1
+        	   if takeshi == 0: 
+        		  gameReady = True
 
 
         boxx, boxy = getBoxAtPixel(mousex, mousey)
@@ -148,6 +150,7 @@ def main():
         # Redraw the screen and wait a clock tick.
         pygame.display.update()
         FPSCLOCK.tick(FPS)
+        turn += 1
 
 
 def generateRevealedBoxesData(val):
@@ -168,7 +171,7 @@ def getRandomizedBoard():
         column = []
         for y in range(BOARDHEIGHT):
             column.append(NONE)
-    board.append(column)
+        board.append(column)
     # Meletakkan POWERUPS secara random di board
 
     powerups = []
@@ -216,31 +219,24 @@ def getBoxAtPixel(x, y):
     return (None, None)
 
 
-def drawIcon(shape, color, boxx, boxy):
-    quarter = int(BOXSIZE * 0.25) # syntactic sugar
-    half =    int(BOXSIZE * 0.5)  # syntactic sugar
-
+def drawIcon(shape, boxx, boxy):
     left, top = leftTopCoordsOfBox(boxx, boxy) # get pixel coords from board coords
     # Draw the shapes
-    if shape == DONUT:
-        pygame.draw.circle(DISPLAYSURF, color, (left + half, top + half), half - 5)
+    if shape == BENTENG:
+        pygame.draw.circle(DISPLAYSURF, BLUE, (left + half, top + half), half - 5)
         pygame.draw.circle(DISPLAYSURF, BGCOLOR, (left + half, top + half), quarter - 5)
-    elif shape == SQUARE:
-        pygame.draw.rect(DISPLAYSURF, color, (left + quarter, top + quarter, BOXSIZE - half, BOXSIZE - half))
-    elif shape == DIAMOND:
-        pygame.draw.polygon(DISPLAYSURF, color, ((left + half, top), (left + BOXSIZE - 1, top + half), (left + half, top + BOXSIZE - 1), (left, top + half)))
-    elif shape == LINES:
-        for i in range(0, BOXSIZE, 4):
-            pygame.draw.line(DISPLAYSURF, color, (left, top + i), (left + i, top))
-            pygame.draw.line(DISPLAYSURF, color, (left + i, top + BOXSIZE - 1), (left + BOXSIZE - 1, top + i))
-    elif shape == OVAL:
-        pygame.draw.ellipse(DISPLAYSURF, color, (left, top + quarter, BOXSIZE, half))
+    elif shape == FIREBOMB:
+        pygame.draw.rect(DISPLAYSURF, RED, (left + quarter, top + quarter, BOXSIZE - half, BOXSIZE - half))
+    elif shape == CROSSBOMB:
+        pygame.draw.polygon(DISPLAYSURF, GREEN, ((left + half, top), (left + BOXSIZE - 1, top + half), (left + half, top + BOXSIZE - 1), (left, top + half)))
+    elif shape == LUCKY:
+        pygame.draw.ellipse(DISPLAYSURF, YELLOW, (left, top + quarter, BOXSIZE, half))
 
 
 def getShapeAndColor(board, boxx, boxy):
     # shape value for x, y spot is stored in board[x][y][0]
     # color value for x, y spot is stored in board[x][y][1]
-    return board[boxx][boxy][0], board[boxx][boxy][1]
+    return board[boxx][boxy][0]
 
 
 def drawBoxCovers(board, boxes, coverage):
@@ -249,8 +245,8 @@ def drawBoxCovers(board, boxes, coverage):
     for box in boxes:
         left, top = leftTopCoordsOfBox(box[0], box[1])
         pygame.draw.rect(DISPLAYSURF, BGCOLOR, (left, top, BOXSIZE, BOXSIZE))
-        shape, color = getShapeAndColor(board, box[0], box[1])
-        drawIcon(shape, color, box[0], box[1])
+        shape = getShapeAndColor(board, box[0], box[1])
+        drawIcon(shape, box[0], box[1])
         if coverage > 0: # only draw the cover if there is an coverage
             pygame.draw.rect(DISPLAYSURF, BOXCOLOR, (left, top, coverage, BOXSIZE))
     pygame.display.update()

@@ -1,7 +1,7 @@
 import random, pygame, sys, socket, json
 from pygame.locals import *
 
-server_address = ('127.0.0.1', 5020)
+server_address = ('127.0.0.1', 5027)
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(server_address)
 
@@ -129,7 +129,15 @@ def main():
                 """
         elif myTurn == 0:
             drawTurn("ENEMY TURN")
-            #pygame.time.wait(10000)
+            for event in pygame.event.get():
+                if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == MOUSEMOTION:
+                    mousex, mousey = event.pos
+                elif event.type == MOUSEBUTTONUP:
+                    mousex, mousey = event.pos
+                    mouseClicked = True
                 
         elif lifePlayer2 == 0:
             gameWonAnimation(mainBoard)

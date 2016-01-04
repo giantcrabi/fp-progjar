@@ -1,6 +1,14 @@
 import random, pygame, sys
 from pygame.locals import *
 
+#from SixNet.Connection import ConnectionListener, connection
+from time import sleep
+
+"""class CatapultWar(self, ConnectionListener):
+    self.connect()
+    connection.Pump()
+    Pump()"""
+
 FPS = 30
 WINDOWWIDTH = 1600
 WINDOWHEIGHT = 900
@@ -42,14 +50,21 @@ NONE = 'none'
 POWERUPS = ((FIREBOMB, 5), (CROSSBOMB, 5), (NAPALM, 3), (GUILLOTINE, 2), (ROCKET, 2), (LUCKY, 5), (SUPERLUCKY, 3))
 
 def main():
-    global FPSCLOCK, DISPLAYSURF
+    global FPSCLOCK, DISPLAYSURF, BASICFONT
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
+    BASICFONT = pygame.font.Font('freesansbold.ttf', 20)
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 
     mousex = 0 #membaca posisi x cursor mouse pada surface
     mousey = 0 #membaca posisi y cursor mouse pada surface
     pygame.display.set_caption('Catapult War')
+
+    pygame.mixer.music.load('music/background.mp3')
+    pygame.mixer.music.set_volume(0.4)
+    pygame.mixer.music.play(-1, 0.0)
+    
+    musicCastle = inisialisasiMusicEffect()
 
     mainBoard = getRandomizedBoard()
     revealedBoxes = generateRevealedBoxesData(False)
@@ -73,6 +88,8 @@ def main():
 
         DISPLAYSURF.fill(BGCOLOR)
         drawBoard(mainBoard, revealedBoxes)
+        drawBentengLawan(5)
+        drawBentengHancur(0)
 
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
@@ -94,6 +111,7 @@ def main():
                     mainBoard[boxx][boxy] = BENTENG
                     revealedBoxes[boxx][boxy] = True
                     drawIcon(BENTENG, boxx, boxy)
+                    musicCastle.play()
         else:
             if kesempatanTembak1 != 0:
                 boxx, boxy = getBoxAtPixel(mousex, mousey)
@@ -131,6 +149,28 @@ def main():
         turn += 1
         pygame.display.update()
         FPSCLOCK.tick(FPS)
+
+
+def drawBentengHancur(score):
+    scoreSurf = BASICFONT.render('Benteng Hancur: %d' % (score), True, WHITE)
+    scoreRect = scoreSurf.get_rect()
+    scoreRect.topleft = (WINDOWWIDTH - 400, 75)
+    DISPLAYSURF.blit(scoreSurf, scoreRect)
+
+
+def drawBentengLawan(score):
+    scoreSurf = BASICFONT.render('Benteng Lawan: %d' % (score), True, WHITE)
+    scoreRect = scoreSurf.get_rect()
+    scoreRect.topleft = (WINDOWWIDTH - 400, 105)
+    DISPLAYSURF.blit(scoreSurf, scoreRect)
+
+
+def inisialisasiMusicEffect():
+    musicCastle = pygame.mixer.Sound('music/buildCastle.ogg')
+    #castleDestroy = pygame.mixer.Sound('')
+    #catapultFire = pygame.mixer.Sound('')
+
+    return musicCastle
 
 
 def generateRevealedBoxesData(val):

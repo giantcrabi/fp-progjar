@@ -60,7 +60,7 @@ def main():
     mousey = 0 #membaca posisi y cursor mouse pada surface
     pygame.display.set_caption('Catapult War')
     
-    pygame.mixer.music.load('background.mp3')
+    pygame.mixer.music.load('music/background.mp3')
     pygame.mixer.music.set_volume(0.4)
     pygame.mixer.music.play(-1, 0.0)
     
@@ -161,7 +161,7 @@ def drawBentengLawan(score):
     DISPLAYSURF.blit(scoreSurf, scoreRect)
 
 def inisialisasiMusicEffect():
-    musicCastle = pygame.mixer.Sound('buildCastle.ogg')
+    musicCastle = pygame.mixer.Sound('music/buildCastle.ogg')
     #castleDestroy = pygame.mixer.Sound('')
     #catapultFire = pygame.mixer.Sound('')
 

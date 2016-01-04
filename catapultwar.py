@@ -214,9 +214,9 @@ def fireCatapult(board, revealedBoxes, boxx, boxy, powerup):
     revealedBoxes[boxx][boxy] = True
     powerPlayer1=''
     if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    	powerPlayer1 = board[boxx][boxy]
+        powerPlayer1 = board[boxx][boxy]
     if(powerup == FIREBOMB):
-    	powerPlayer1 = ''
+        powerPlayer1 = ''
         boxes = []
         boxes.append((boxx, boxy))
         revealedBoxes[boxx][boxy] = True
@@ -225,134 +225,134 @@ def fireCatapult(board, revealedBoxes, boxx, boxy, powerup):
             boxes.append((boxx - 1, boxy))
             revealedBoxes[boxx - 1][boxy] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxx + 1 < BOARDWIDTH and not revealedBoxes[boxx + 1][boxy]):
             boxes.append((boxx + 1, boxy))
             revealedBoxes[boxx + 1][boxy] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxy - 1 >= 0 and not revealedBoxes[boxx][boxy - 1]):
             boxes.append((boxx, boxy - 1))
             revealedBoxes[boxx][boxy - 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxy + 1 < BOARDHEIGHT and not revealedBoxes[boxx][boxy + 1]):
             boxes.append((boxx, boxy + 1))
             revealedBoxes[boxx][boxy + 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
 
     if(powerup == CROSSBOMB):
-    	powerPlayer1 = ''
-    	boxes = []
-    	boxes.append((boxx, boxy))
-    	revealedBoxes[boxx][boxy] = True
+        powerPlayer1 = ''
+        boxes = []
+        boxes.append((boxx, boxy))
+        revealedBoxes[boxx][boxy] = True
 
         if(boxx - 1 >= 0 and boxy - 1 and not revealedBoxes[boxx - 1][boxy]):
             boxes.append((boxx - 1, boxy - 1))
             revealedBoxes[boxx - 1][boxy - 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxx + 1 < BOARDWIDTH and boxy + 1 < BOARDHEIGHT and not revealedBoxes[boxx + 1][boxy]):
             boxes.append((boxx + 1, boxy + 1))
             revealedBoxes[boxx + 1][boxy + 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxy - 1 >= 0 and boxx + 1 < BOARDWIDTH and not revealedBoxes[boxx][boxy - 1]):
             boxes.append((boxx + 1, boxy - 1))
             revealedBoxes[boxx + 1][boxy - 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxy + 1 < BOARDHEIGHT and boxx - 1 >= 0 and not revealedBoxes[boxx][boxy + 1]):
             boxes.append((boxx - 1, boxy + 1))
             revealedBoxes[boxx - 1][boxy + 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
 
     if(powerup == NAPALM):
-    	powerPlayer1 = ''
-    	boxes = []
-    	boxes.append((boxx, boxy))
-    	revealedBoxes[boxx][boxy] = True
+        powerPlayer1 = ''
+        boxes = []
+        boxes.append((boxx, boxy))
+        revealedBoxes[boxx][boxy] = True
 
         if(boxx - 1 >= 0 and boxy - 1 and not revealedBoxes[boxx - 1][boxy]):
             boxes.append((boxx - 1, boxy - 1))
             revealedBoxes[boxx - 1][boxy - 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxx + 1 < BOARDWIDTH and boxy + 1 < BOARDHEIGHT and not revealedBoxes[boxx + 1][boxy]):
             boxes.append((boxx + 1, boxy + 1))
             revealedBoxes[boxx + 1][boxy + 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxy - 1 >= 0 and boxx + 1 < BOARDWIDTH and not revealedBoxes[boxx][boxy - 1]):
             boxes.append((boxx + 1, boxy - 1))
             revealedBoxes[boxx + 1][boxy - 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxy + 1 < BOARDHEIGHT and boxx - 1 >= 0 and not revealedBoxes[boxx][boxy + 1]):
             boxes.append((boxx - 1, boxy + 1))
             revealedBoxes[boxx - 1][boxy + 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxx - 1 >= 0 and not revealedBoxes[boxx - 1][boxy]):
             boxes.append((boxx - 1, boxy))
             revealedBoxes[boxx - 1][boxy] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxx + 1 < BOARDWIDTH and not revealedBoxes[boxx + 1][boxy]):
             boxes.append((boxx + 1, boxy))
             revealedBoxes[boxx + 1][boxy] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxy - 1 >= 0 and not revealedBoxes[boxx][boxy - 1]):
             boxes.append((boxx, boxy - 1))
             revealedBoxes[boxx][boxy - 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
         if(boxy + 1 < BOARDHEIGHT and not revealedBoxes[boxx][boxy + 1]):
             boxes.append((boxx, boxy + 1))
             revealedBoxes[boxx][boxy + 1] = True
             if board[boxx][boxy] != NONE and board[boxx][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy]
+                powerPlayer1 = board[boxx][boxy]
 
     if(powerup == GUILLOTINE):
-    	powerPlayer1 = ''
-    	boxes = []
-    	boxes.append((boxx, boxy))
-    	revealedBoxes[boxx][boxy] = True
-    	boxx1 = boxx - 1
-    	boxx2 = boxx + 1
-    	while boxx1 >=0:
-    	   boxes.append((boxx1, boxy))
+        powerPlayer1 = ''
+        boxes = []
+        boxes.append((boxx, boxy))
+        revealedBoxes[boxx][boxy] = True
+        boxx1 = boxx - 1
+        boxx2 = boxx + 1
+        while boxx1 >=0:
+           boxes.append((boxx1, boxy))
            revealedBoxes[boxx1][boxy] = True
            if board[boxx1][boxy] != NONE and board[boxx1][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx1][boxy]
+                powerPlayer1 = board[boxx1][boxy]
            boxx1 -= 1
-     	while boxx2 < BOARDWIDTH:
-    	   boxes.append((boxx2, boxy))
+        while boxx2 < BOARDWIDTH:
+           boxes.append((boxx2, boxy))
            revealedBoxes[boxx2][boxy] = True
            if board[boxx2][boxy] != NONE and board[boxx2][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx2][boxy]
+                powerPlayer1 = board[boxx2][boxy]
            boxx2 += 1
     if(powerup == ROCKET):
-    	powerPlayer1 = ''
-    	boxes = []
-    	boxes.append((boxx, boxy))
-    	revealedBoxes[boxx][boxy] = True
-    	boxy1 = boxy - 1
-    	boxy2 = boxy + 1
-    	while boxy1 >=0:
-    	   boxes.append((boxx, boxy1))
+        powerPlayer1 = ''
+        boxes = []
+        boxes.append((boxx, boxy))
+        revealedBoxes[boxx][boxy] = True
+        boxy1 = boxy - 1
+        boxy2 = boxy + 1
+        while boxy1 >=0:
+           boxes.append((boxx, boxy1))
            revealedBoxes[boxx][boxy1] = True
            if board[boxx][boxy1] != NONE and board[boxx][boxy1] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy1]
+                powerPlayer1 = board[boxx][boxy1]
            boxy1 -= 1
-     	while boxy2 < BOARDWIDTH:
-    	   boxes.append((boxx, boxy2))
+        while boxy2 < BOARDWIDTH:
+           boxes.append((boxx, boxy2))
            revealedBoxes[boxx][boxy2] = True
            if board[boxx][boxy2] != NONE and board[boxx][boxy2] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy2]
+                powerPlayer1 = board[boxx][boxy2]
            boxy2 += 1
     #elif(powerup == CROSSBOMB):
 

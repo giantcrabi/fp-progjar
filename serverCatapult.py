@@ -1,5 +1,5 @@
 import SocketServer
-import random, pygame, sys
+import random, pygame, sys, json
 from pygame.locals import *
 
 FPS = 30
@@ -44,14 +44,10 @@ POWERUPS = ((FIREBOMB, 5), (CROSSBOMB, 5), (NAPALM, 3), (GUILLOTINE, 2), (ROCKET
 
 lifePlayer1 = 5
 lifePlayer2 = 5
-jumlahBenteng1 = 5
-jumlahBenteng2 = 5
 kena1 = 0
 kena2 = 0
-kesempatanTembak1 = 100
+kesempatanTembak1 = 3
 kesempatanTembak2 = 3
-powerPlayer1 = ''
-powerPlayer2 = ''
 turn = 0
 
 class MyTCPHandler(SocketServer.StreamRequestHandler):
@@ -61,8 +57,15 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
             self.data = self.request.recv(1024).strip()
             print "{} wrote:".format(self.client_address[0])
             print self.data
-            if(self.data == 'LP2'):
+            if(self.data == 'init'):
+                self.initVar()
+            elif(self.data == 'LP2'):
                 self.sendLifePlayer2()
+
+    def initVar(self):
+        datalist = [lifePlayer1,kesempatanTembak1]
+        databuffer = json.dumps(datalist)
+        self.request.send(databuffer)
 
     def sendLifePlayer2(self):
         self.request.send(str(lifePlayer2))

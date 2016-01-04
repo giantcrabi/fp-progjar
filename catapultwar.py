@@ -1,4 +1,4 @@
-import random, pygame, sys, socket
+import random, pygame, sys, socket, json
 from pygame.locals import *
 
 server_address = ('127.0.0.1', 5002)
@@ -65,9 +65,9 @@ def main():
     mainBoard = getRandomizedBoard()
     revealedBoxes = generateRevealedBoxesData(False)
 
-    lifePlayer1 = 5
+    lifePlayer1, jumlahBenteng1 = getInitVar()
+    print lifePlayer1, jumlahBenteng1
     lifePlayer2 = getLifePlayer2()
-    jumlahBenteng1 = 5
     jumlahBenteng2 = 5
     kena1 = 0
     kena2 = 0
@@ -144,10 +144,18 @@ def main():
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
+def getInitVar():
+    client_socket.send('init')
+    receive = client_socket.recv(1024)
+    parsed_data = json.loads(receive)
+    return parsed_data[0], parsed_data[1]
+
+
 def getLifePlayer2():
     client_socket.send('LP2')
     receive = int(client_socket.recv(1024))
     return receive
+
 
 def drawBentengHancur(score):
     scoreSurf = BASICFONT.render('Benteng Hancur: %d' % (score), True, WHITE)

@@ -65,17 +65,15 @@ def main():
     mainBoard = getRandomizedBoard()
     revealedBoxes = generateRevealedBoxesData(False)
 
-    lifePlayer1, jumlahBenteng1 = getInitVar()
-    print lifePlayer1, jumlahBenteng1
+    lifePlayer1, kesempatanTembak1 = getInitVar()
+    jumlahBenteng1 = 5
     lifePlayer2 = getLifePlayer2()
     jumlahBenteng2 = 5
     kena1 = 0
     kena2 = 0
-    kesempatanTembak1 = 100
     kesempatanTembak2 = 3
     powerPlayer1 = ''
     powerPlayer2 = ''
-    turn = 0
 
     DISPLAYSURF.fill(BGCOLOR)
     drawBoard(mainBoard, revealedBoxes)
@@ -86,8 +84,8 @@ def main():
 
         DISPLAYSURF.fill(BGCOLOR)
         drawBoard(mainBoard, revealedBoxes)
-        drawBentengLawan(lifePlayer1)
-        drawBentengHancur(lifePlayer2)
+        drawBentengLawan(lifePlayer2)
+        drawBentengHancur(lifePlayer1)
 
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
@@ -99,7 +97,7 @@ def main():
                 mousex, mousey = event.pos
                 mouseClicked = True
 
-        if jumlahBenteng1 != 0:
+        if jumlahBenteng1 > 0:
             boxx, boxy = getBoxAtPixel(mousex, mousey)
             if boxx != None and boxy != None:
                 if not revealedBoxes[boxx][boxy]:
@@ -110,6 +108,9 @@ def main():
                     revealedBoxes[boxx][boxy] = True
                     drawIcon(BENTENG, boxx, boxy)
                     musicCastle.play()
+        if jumlahBenteng1 == 0:
+        	sendBoard(mainBoard)
+        	jumlahBenteng1 -= 1
         else:
             if kesempatanTembak1 != 0:
                 boxx, boxy = getBoxAtPixel(mousex, mousey)
@@ -118,7 +119,7 @@ def main():
                         drawHighlightBox(boxx, boxy)
                     if not revealedBoxes[boxx][boxy] and mouseClicked:
                         powerPlayer1, kena1  = fireCatapult(mainBoard,revealedBoxes,boxx,boxy,powerPlayer1)
-                        lifePlayer1 -= kena1
+                        lifePlayer2 = sendKena(kena1)
                         kesempatanTembak1 -= 1
                 """
                 if mainBoard[boxx][boxy] == BENTENG:
@@ -128,7 +129,7 @@ def main():
                 """
 
             
-            if lifePlayer1 == 0:
+            if lifePlayer2 == 0:
                 gameWonAnimation(mainBoard)
                 pygame.time.wait(2000)
 
@@ -140,7 +141,6 @@ def main():
                 startGameAnimation(mainBoard)
 
 
-        turn += 1
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
@@ -155,6 +155,20 @@ def getLifePlayer2():
     client_socket.send('LP2')
     receive = int(client_socket.recv(1024))
     return receive
+
+def sendKena(kena):
+	client_socket.send('SK')
+	pygame.time.wait(5)
+   	client_socket.send(str(kena))
+   	receive = int(client_socket.recv(1024))
+	return receive
+
+def sendBoard(board):
+	client_socket.send('MB')
+	pygame.time.wait(5)
+   	databuffer = json.dumps(board)
+   	client_socket.send(databuffer)
+
 
 
 def drawBentengHancur(score):

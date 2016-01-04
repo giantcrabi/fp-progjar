@@ -44,11 +44,14 @@ POWERUPS = ((FIREBOMB, 5), (CROSSBOMB, 5), (NAPALM, 3), (GUILLOTINE, 2), (ROCKET
 
 lifePlayer1 = 5
 lifePlayer2 = 5
+sisaLife1 = 5
+sisaLife2 = 5
 kena1 = 0
 kena2 = 0
 kesempatanTembak1 = 3
 kesempatanTembak2 = 3
-turn = 0
+board1 = []
+board2 = []
 
 class MyTCPHandler(SocketServer.StreamRequestHandler):
     timeout = 60
@@ -61,6 +64,10 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
                 self.initVar()
             elif(self.data == 'LP2'):
                 self.sendLifePlayer2()
+            elif(self.data == 'SK'):
+                self.getKena()
+            elif(self.data == 'MB'):
+                self.getBoard()
 
     def initVar(self):
         datalist = [lifePlayer1,kesempatanTembak1]
@@ -68,7 +75,20 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
         self.request.send(databuffer)
 
     def sendLifePlayer2(self):
-        self.request.send(str(lifePlayer2))
+        self.request.send(str(sisaLife2))
+
+    def getKena(self):
+        global kena1
+        global sisaLife2
+        kena1 = int(self.request.recv(1024).strip())
+        sisaLife2 = sisaLife2 - kena1
+        self.sendLifePlayer2()
+
+    def getBoard(self):
+        global board1
+        receive = self.request.recv(4096)
+        board1 = json.loads(receive)
+        print board1
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 5002

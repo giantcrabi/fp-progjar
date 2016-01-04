@@ -76,7 +76,9 @@ def main():
 
     while True:
         mouseClicked = False
+        """
         lifePlayer1 = getLifePlayer1()
+        """
 
         DISPLAYSURF.fill(BGCOLOR)
         drawBoard(mainBoard, revealedBoxes)

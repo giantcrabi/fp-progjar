@@ -1,5 +1,5 @@
 import SocketServer
-import random, pygame, sys, json, random
+import random, pygame, sys, json, random, threading
 from pygame.locals import *
 
 FPS = 30
@@ -62,11 +62,15 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
     def handle(self):
         while True:
             self.data = self.request.recv(1024).strip()
+            self.cur_thread = threading.current_thread()
             if(self.data == ''):
-                self.server.server_close()
                 break
+            response = "{}: {}".format(self.cur_thread.name, self.data)
+            print response
+            """
             print "{} wrote:".format(self.client_address[0])
             print self.data
+            """
             if(self.data == 'init'):
                 self.initVar()
             elif(self.data == 'LP'):
@@ -104,9 +108,18 @@ if __name__ == "__main__":
     HOST, PORT = "localhost", 5002
 
     server = ThreadedTCPServer((HOST, PORT), MyTCPHandler )
+    ip, port = server.server_address
 
     try:
-        server.serve_forever()
+        # Start a thread with the server -- that thread will then start one
+        # more thread for each request
+        server_thread = threading.Thread(target=server.serve_forever())
+        # Exit the server thread when the main thread terminates
+        server_thread.daemon = True
+        server_thread.start()
+        print "Server loop running in thread:", server_thread.name
+
     except KeyboardInterrupt:
         print "Got keyboard interrupt, shutting down"
         server.shutdown()
+        server.server_close()

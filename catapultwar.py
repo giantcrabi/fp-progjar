@@ -54,9 +54,14 @@ def main():
     mainBoard = getRandomizedBoard()
     revealedBoxes = generateRevealedBoxesData(False)
 
-    player1 = 5
-    takeshi1 = 5
-    setBenteng = False
+    lifePlayer1 = 5
+    lifePlayer2 = 5
+    jumlahBenteng1 = 5
+    jumlahBenteng2 = 5
+    kesempatanTembak1 = 3
+    kesempatanTembak2 = 3
+    powerPlayer1 = ''
+    powerPlayer2 = ''
     turn = 0
 
     DISPLAYSURF.fill(BGCOLOR)
@@ -65,8 +70,6 @@ def main():
 
     while True:
         mouseClicked = False
-        playerPU = ''
-        turnLeft = 3
 
         DISPLAYSURF.fill(BGCOLOR)
         drawBoard(mainBoard, revealedBoxes)
@@ -81,38 +84,38 @@ def main():
                 mousex, mousey = event.pos
                 mouseClicked = True
 
-        if takeshi1 != 0:
+        if jumlahBenteng1 != 0:
             boxx, boxy = getBoxAtPixel(mousex, mousey)
             if boxx != None and boxy != None:
                 if not revealedBoxes[boxx][boxy]:
                     drawHighlightBox(boxx, boxy)
                 if not revealedBoxes[boxx][boxy] and mouseClicked:
-                    takeshi1 -= 1
+                    jumlahBenteng1 -= 1
                     mainBoard[boxx][boxy] = BENTENG
                     revealedBoxes[boxx][boxy] = True
                     drawIcon(BENTENG, boxx, boxy)
         else:
-            boxx, boxy = getBoxAtPixel(mousex, mousey)
-            if boxx != None and boxy != None:
-                if not revealedBoxes[boxx][boxy]:
-                    drawHighlightBox(boxx, boxy)
-                if not revealedBoxes[boxx][boxy] and mouseClicked:
-                    fireCatapult(mainBoard,revealedBoxes,boxx,boxy,FIREBOMB)
-                    """
-                    if mainBoard[boxx][boxy] == NONE:
-                        a = 5
-                    elif mainBoard[boxx][boxy] == BENTENG:
-                        player1 -= 1
-                    else:
-                        playerpu = mainBoard[boxx][boxy]
-                    """
+            if kesempatanTembak1 != 0:
+                boxx, boxy = getBoxAtPixel(mousex, mousey)
+                if boxx != None and boxy != None:
+                    if not revealedBoxes[boxx][boxy]:
+                        drawHighlightBox(boxx, boxy)
+                    if not revealedBoxes[boxx][boxy] and mouseClicked:
+                        fireCatapult(mainBoard,revealedBoxes,boxx,boxy,FIREBOMB)
+                        kesempatanTembak1 -= 1
+                """
+                if mainBoard[boxx][boxy] == BENTENG:
+                    lifePlayer2 -= 1
+                elif mainBoard[boxx][boxy] != NONE:
+                    powerPlayer1 = mainBoard[boxx][boxy]
+                """
 
             """
-            if player1 == 0:
+            if lifePlayer2 == 0:
                 gameWonAnimation(mainBoard)
                 pygame.time.wait(2000)
 
-                        # Reset the board
+                # Reset the board
                 mainBoard = getRandomizedBoard()
                 revealedBoxes = generateRevealedBoxesData(False)
 

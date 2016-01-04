@@ -8,6 +8,7 @@ from time import sleep
     self.connect()
     connection.Pump()
     Pump()"""
+"""coba sajaa"""
 
 FPS = 30
 WINDOWWIDTH = 1600

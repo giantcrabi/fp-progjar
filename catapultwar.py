@@ -66,8 +66,8 @@ def main():
     revealedBoxes = generateRevealedBoxesData(False)
 
     lifePlayer1, kesempatanTembak1 = getInitVar()
-    jumlahBenteng1 = 5
     lifePlayer2 = getLifePlayer2()
+    jumlahBenteng1 = 5
     jumlahBenteng2 = 5
     kena1 = 0
     kena2 = 0
@@ -109,8 +109,8 @@ def main():
                     drawIcon(BENTENG, boxx, boxy)
                     musicCastle.play()
         if jumlahBenteng1 == 0:
-        	sendBoard(mainBoard)
-        	jumlahBenteng1 -= 1
+            sendBoard(mainBoard)
+            jumlahBenteng1 -= 1
         else:
             if kesempatanTembak1 != 0:
                 boxx, boxy = getBoxAtPixel(mousex, mousey)
@@ -121,13 +121,10 @@ def main():
                         powerPlayer1, kena1  = fireCatapult(mainBoard,revealedBoxes,boxx,boxy,powerPlayer1)
                         lifePlayer2 = sendKena(kena1)
                         kesempatanTembak1 -= 1
-                """
-                if mainBoard[boxx][boxy] == BENTENG:
-                    lifePlayer2 -= 1
-                elif mainBoard[boxx][boxy] != NONE:
-                    powerPlayer1 = mainBoard[boxx][boxy]
-                """
-
+            """
+            else:
+                kesempatanTembak1 = finishTurn()
+            """
             
             if lifePlayer2 == 0:
                 gameWonAnimation(mainBoard)
@@ -140,9 +137,9 @@ def main():
                 # Replay the start game animation.
                 startGameAnimation(mainBoard)
 
-
         pygame.display.update()
         FPSCLOCK.tick(FPS)
+
 
 def getInitVar():
     client_socket.send('init')
@@ -152,23 +149,27 @@ def getInitVar():
 
 
 def getLifePlayer2():
-    client_socket.send('LP2')
+    client_socket.send('LP')
+    receive = int(client_socket.recv(1024))
+    return receive
+
+def finishTurn():
+    client_socket.send('FI')
     receive = int(client_socket.recv(1024))
     return receive
 
 def sendKena(kena):
-	client_socket.send('SK')
-	pygame.time.wait(5)
-   	client_socket.send(str(kena))
-   	receive = int(client_socket.recv(1024))
-	return receive
+    client_socket.send('SK')
+    pygame.time.wait(5)
+    client_socket.send(str(kena))
+    receive = int(client_socket.recv(1024))
+    return receive
 
 def sendBoard(board):
-	client_socket.send('MB')
-	pygame.time.wait(5)
-   	databuffer = json.dumps(board)
-   	client_socket.send(databuffer)
-
+    client_socket.send('MB')
+    pygame.time.wait(5)
+    databuffer = json.dumps(board)
+    client_socket.send(databuffer)
 
 
 def drawBentengHancur(score):

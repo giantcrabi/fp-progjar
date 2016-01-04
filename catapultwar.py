@@ -65,15 +65,10 @@ def main():
     mainBoard = getRandomizedBoard()
     revealedBoxes = generateRevealedBoxesData(False)
 
-    lifePlayer1, kesempatanTembak1 = getInitVar()
-    lifePlayer2 = getLifePlayer2()
+    lifePlayer1, lifePlayer2, kesempatanTembak1 = getInitVar()
     jumlahBenteng1 = 5
-    jumlahBenteng2 = 5
     kena1 = 0
-    kena2 = 0
-    kesempatanTembak2 = 3
     powerPlayer1 = ''
-    powerPlayer2 = ''
 
     DISPLAYSURF.fill(BGCOLOR)
     drawBoard(mainBoard, revealedBoxes)
@@ -81,11 +76,12 @@ def main():
 
     while True:
         mouseClicked = False
+        lifePlayer1 = getLifePlayer1()
 
         DISPLAYSURF.fill(BGCOLOR)
         drawBoard(mainBoard, revealedBoxes)
+        drawBentengSendiri(lifePlayer1)
         drawBentengLawan(lifePlayer2)
-        drawBentengHancur(lifePlayer1)
 
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
@@ -145,10 +141,9 @@ def getInitVar():
     client_socket.send('init')
     receive = client_socket.recv(1024)
     parsed_data = json.loads(receive)
-    return parsed_data[0], parsed_data[1]
+    return parsed_data[0], parsed_data[1], parsed_data[2]
 
-
-def getLifePlayer2():
+def getLifePlayer1():
     client_socket.send('LP')
     receive = int(client_socket.recv(1024))
     return receive
@@ -172,8 +167,8 @@ def sendBoard(board):
     client_socket.send(databuffer)
 
 
-def drawBentengHancur(score):
-    scoreSurf = BASICFONT.render('Benteng Hancur: %d' % (score), True, WHITE)
+def drawBentengSendiri(score):
+    scoreSurf = BASICFONT.render('Benteng Player: %d' % (score), True, WHITE)
     scoreRect = scoreSurf.get_rect()
     scoreRect.topleft = (WINDOWWIDTH - 400, 75)
     DISPLAYSURF.blit(scoreSurf, scoreRect)

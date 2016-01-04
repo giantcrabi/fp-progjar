@@ -42,6 +42,9 @@ NONE = 'none'
 
 POWERUPS = ((FIREBOMB, 5), (CROSSBOMB, 5), (NAPALM, 3), (GUILLOTINE, 2), (ROCKET, 2), (LUCKY, 5), (SUPERLUCKY, 3))
 
+class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+    pass
+
 class MyTCPHandler(SocketServer.StreamRequestHandler):
     timeout = 60
     lifePlayer1 = 5
@@ -59,21 +62,25 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
     def handle(self):
         while True:
             self.data = self.request.recv(1024).strip()
+            if(self.data == ''):
+                self.server.server_close()
+                break
             print "{} wrote:".format(self.client_address[0])
             print self.data
             if(self.data == 'init'):
                 self.initVar()
             elif(self.data == 'LP'):
-                self.sendLifePlayer(self.lifePlayer2)
+                self.sendLifePlayer(self.lifePlayer1)
             elif(self.data == 'FI'):
-                self.sendLifePlayer(self.kesempatanTembak2)
+                self.sendKesempatanTembak(self.kesempatanTembak1)
             elif(self.data == 'SK'):
                 self.getKena()
             elif(self.data == 'MB'):
                 self.getBoard()
 
+
     def initVar(self):
-        datalist = [self.lifePlayer1,self.kesempatanTembak1]
+        datalist = [self.lifePlayer1,self.lifePlayer2,self.kesempatanTembak1]
         databuffer = json.dumps(datalist)
         self.request.send(databuffer)
 
@@ -96,7 +103,7 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
 if __name__ == "__main__":
     HOST, PORT = "localhost", 5002
 
-    server = SocketServer.TCPServer((HOST, PORT), MyTCPHandler)
+    server = ThreadedTCPServer((HOST, PORT), MyTCPHandler )
 
     try:
         server.serve_forever()

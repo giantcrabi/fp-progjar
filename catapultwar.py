@@ -1,7 +1,7 @@
 import random, pygame, sys, socket, json
 from pygame.locals import *
 
-server_address = ('127.0.0.1', 5002)
+server_address = ('127.0.0.1', 5013)
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(server_address)
 
@@ -76,9 +76,9 @@ def main():
 
     while True:
         mouseClicked = False
-        """
+        
         lifePlayer1 = getLifePlayer1()
-        """
+        
 
         DISPLAYSURF.fill(BGCOLOR)
         drawBoard(mainBoard, revealedBoxes)

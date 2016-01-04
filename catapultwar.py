@@ -199,6 +199,8 @@ def getRandomizedBoard():
     board[2][0] = BENTENG
     board[3][0] = BENTENG
     board[4][0] = BENTENG
+    board[5][0] = ROCKET
+    board[7][0] = GUILLOTINE
     while(len(powerups) != 0):
         xcoord = random.randint(0, BOARDWIDTH - 1)
         ycoord = random.randint(0, BOARDHEIGHT - 1)
@@ -261,31 +263,31 @@ def fireCatapult(board, revealedBoxes, boxx, boxy, powerup):
     	boxes.append((boxx, boxy))
     	revealedBoxes[boxx][boxy] = True
 
-        if(boxx - 1 >= 0 and boxy - 1 and not revealedBoxes[boxx - 1][boxy]):
+        if(boxx - 1 >= 0 and boxy - 1 and not revealedBoxes[boxx - 1][boxy - 1]):
             boxes.append((boxx - 1, boxy - 1))
             revealedBoxes[boxx - 1][boxy - 1] = True
             if board[boxx - 1][boxy - 1] != NONE and board[boxx - 1][boxy - 1] != BENTENG:
     			powerPlayer1 = board[boxx - 1][boxy - 1]
        	    if board[boxx - 1][boxy - 1] == BENTENG:
     			kena1 += 1
-        if(boxx + 1 < BOARDWIDTH and boxy + 1 < BOARDHEIGHT and not revealedBoxes[boxx + 1][boxy]):
+        if(boxx + 1 < BOARDWIDTH and boxy + 1 < BOARDHEIGHT and not revealedBoxes[boxx + 1][boxy + 1]):
             boxes.append((boxx + 1, boxy + 1))
             revealedBoxes[boxx + 1][boxy + 1] = True
             if board[boxx + 1][boxy + 1] != NONE and board[boxx + 1][boxy + 1] != BENTENG:
     			powerPlayer1 = board[boxx + 1][boxy + 1]
     	    if board[boxx + 1][boxy + 1] == BENTENG:
     			kena1 += 1
-        if(boxy - 1 >= 0 and boxx + 1 < BOARDWIDTH and not revealedBoxes[boxx][boxy - 1]):
+        if(boxy - 1 >= 0 and boxx + 1 < BOARDWIDTH and not revealedBoxes[boxx + 1][boxy - 1]):
             boxes.append((boxx + 1, boxy - 1))
             revealedBoxes[boxx + 1][boxy - 1] = True
-            if board[boxx + 1][boxy - 1] != NONE and board[boxx][boxy] != BENTENG:
+            if board[boxx + 1][boxy - 1] != NONE and board[boxx + 1][boxy - 1] != BENTENG:
     			powerPlayer1 = board[boxx + 1][boxy - 1]
     	    if board[boxx + 1][boxy - 1] == BENTENG:
     			kena1 += 1
-        if(boxy + 1 < BOARDHEIGHT and boxx - 1 >= 0 and not revealedBoxes[boxx][boxy + 1]):
+        if(boxy + 1 < BOARDHEIGHT and boxx - 1 >= 0 and not revealedBoxes[boxx - 1][boxy + 1]):
             boxes.append((boxx - 1, boxy + 1))
             revealedBoxes[boxx - 1][boxy + 1] = True
-            if board[boxx - 1][boxy + 1] != NONE and board[boxx][boxy] != BENTENG:
+            if board[boxx - 1][boxy + 1] != NONE and board[boxx - 1][boxy + 1] != BENTENG:
     			powerPlayer1 = board[boxx - 1][boxy + 1]
     	    if board[boxx - 1][boxy + 1] == BENTENG:
     			kena1 += 1
@@ -296,31 +298,31 @@ def fireCatapult(board, revealedBoxes, boxx, boxy, powerup):
     	boxes.append((boxx, boxy))
     	revealedBoxes[boxx][boxy] = True
 
-        if(boxx - 1 >= 0 and boxy - 1 and not revealedBoxes[boxx - 1][boxy]):
+        if(boxx - 1 >= 0 and boxy - 1 and not revealedBoxes[boxx - 1][boxy - 1]):
             boxes.append((boxx - 1, boxy - 1))
             revealedBoxes[boxx - 1][boxy - 1] = True
             if board[boxx - 1][boxy - 1] != NONE and board[boxx - 1][boxy - 1] != BENTENG:
     			powerPlayer1 = board[boxx - 1][boxy - 1]
        	    if board[boxx - 1][boxy - 1] == BENTENG:
     			kena1 += 1
-        if(boxx + 1 < BOARDWIDTH and boxy + 1 < BOARDHEIGHT and not revealedBoxes[boxx + 1][boxy]):
+        if(boxx + 1 < BOARDWIDTH and boxy + 1 < BOARDHEIGHT and not revealedBoxes[boxx + 1][boxy + 1]):
             boxes.append((boxx + 1, boxy + 1))
             revealedBoxes[boxx + 1][boxy + 1] = True
             if board[boxx + 1][boxy + 1] != NONE and board[boxx + 1][boxy + 1] != BENTENG:
     			powerPlayer1 = board[boxx + 1][boxy + 1]
     	    if board[boxx + 1][boxy + 1] == BENTENG:
     			kena1 += 1
-        if(boxy - 1 >= 0 and boxx + 1 < BOARDWIDTH and not revealedBoxes[boxx][boxy - 1]):
+        if(boxy - 1 >= 0 and boxx + 1 < BOARDWIDTH and not revealedBoxes[boxx + 1][boxy - 1]):
             boxes.append((boxx + 1, boxy - 1))
             revealedBoxes[boxx + 1][boxy - 1] = True
-            if board[boxx + 1][boxy - 1] != NONE and board[boxx][boxy] != BENTENG:
+            if board[boxx + 1][boxy - 1] != NONE and board[boxx + 1][boxy - 1] != BENTENG:
     			powerPlayer1 = board[boxx + 1][boxy - 1]
     	    if board[boxx + 1][boxy - 1] == BENTENG:
     			kena1 += 1
-        if(boxy + 1 < BOARDHEIGHT and boxx - 1 >= 0 and not revealedBoxes[boxx][boxy + 1]):
+        if(boxy + 1 < BOARDHEIGHT and boxx - 1 >= 0 and not revealedBoxes[boxx - 1][boxy + 1]):
             boxes.append((boxx - 1, boxy + 1))
             revealedBoxes[boxx - 1][boxy + 1] = True
-            if board[boxx - 1][boxy + 1] != NONE and board[boxx][boxy] != BENTENG:
+            if board[boxx - 1][boxy + 1] != NONE and board[boxx - 1][boxy + 1] != BENTENG:
     			powerPlayer1 = board[boxx - 1][boxy + 1]
     	    if board[boxx - 1][boxy + 1] == BENTENG:
     			kena1 += 1
@@ -361,20 +363,22 @@ def fireCatapult(board, revealedBoxes, boxx, boxy, powerup):
     	boxx1 = boxx - 1
     	boxx2 = boxx + 1
     	while boxx1 >=0:
-    	   boxes.append((boxx1, boxy))
-           revealedBoxes[boxx1][boxy] = True
-           if board[boxx1][boxy] != NONE and board[boxx1][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx1][boxy]
-     	   if board[boxx1][boxy] == BENTENG:
-    			kena1 += 1
+    	   if not revealedBoxes[boxx1][boxy]:
+    	   		boxes.append((boxx1, boxy))
+           		revealedBoxes[boxx1][boxy] = True
+           		if board[boxx1][boxy] != NONE and board[boxx1][boxy] != BENTENG:
+    				powerPlayer1 = board[boxx1][boxy]
+     	   		if board[boxx1][boxy] == BENTENG:
+    				kena1 += 1
            boxx1 -= 1
      	while boxx2 < BOARDWIDTH:
-    	   boxes.append((boxx2, boxy))
-           revealedBoxes[boxx2][boxy] = True
-           if board[boxx2][boxy] != NONE and board[boxx2][boxy] != BENTENG:
-    			powerPlayer1 = board[boxx2][boxy]
-    	   if board[boxx2][boxy] == BENTENG:
-    			kena1 += 1
+    	   if not revealedBoxes[boxx2][boxy]:
+    	   		boxes.append((boxx2, boxy))
+           		revealedBoxes[boxx2][boxy] = True
+           		if board[boxx2][boxy] != NONE and board[boxx2][boxy] != BENTENG:
+    				powerPlayer1 = board[boxx2][boxy]
+     	   		if board[boxx2][boxy] == BENTENG:
+    				kena1 += 1
            boxx2 += 1
     if(powerup == ROCKET):
     	powerPlayer1 = ''
@@ -384,21 +388,23 @@ def fireCatapult(board, revealedBoxes, boxx, boxy, powerup):
     	boxy1 = boxy - 1
     	boxy2 = boxy + 1
     	while boxy1 >=0:
-    	   boxes.append((boxx, boxy1))
-           revealedBoxes[boxx][boxy1] = True
-           if board[boxx][boxy1] != NONE and board[boxx][boxy1] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy1]
-      	   if board[boxx][boxy1] == BENTENG:
-    			kena1 += 1
+    	   if not revealedBoxes[boxx][boxy1]:
+    	   		boxes.append((boxx, boxy1))
+           		revealedBoxes[boxx][boxy1] = True
+           		if board[boxx][boxy1] != NONE and board[boxx][boxy1] != BENTENG:
+    				powerPlayer1 = board[boxx][boxy1]
+     	   		if board[boxx][boxy1] == BENTENG:
+    				kena1 += 1
            boxy1 -= 1
      	while boxy2 < BOARDWIDTH:
-    	   boxes.append((boxx, boxy2))
-           revealedBoxes[boxx][boxy2] = True
-           if board[boxx][boxy2] != NONE and board[boxx][boxy2] != BENTENG:
-    			powerPlayer1 = board[boxx][boxy2]
-     	   if board[boxx][boxy2] == BENTENG:
-    			kena1 += 1
-           boxy2 += 1
+    	   if not revealedBoxes[boxx][boxy2]:
+    	   		boxes.append((boxx, boxy2))
+           		revealedBoxes[boxx][boxy2] = True
+           		if board[boxx][boxy2] != NONE and board[boxx][boxy2] != BENTENG:
+    				powerPlayer1 = board[boxx][boxy2]
+     	   		if board[boxx][boxy2] == BENTENG:
+    				kena1 += 1
+       	   boxy2 += 1
     #elif(powerup == CROSSBOMB):
 
     #elif(powerup == NAPALM):
@@ -445,7 +451,8 @@ def drawIcon(shape, boxx, boxy):
         DISPLAYSURF.blit(pygame.image.load('gambar/lucky.png'),(left,top))
     elif shape == SUPERLUCKY:
         DISPLAYSURF.blit(pygame.image.load('gambar/superlucky.png'),(left,top))
-
+    elif shape == ROCKET:
+        DISPLAYSURF.blit(pygame.image.load('gambar/rocket.png'),(left,top))
 
 def getShape(board, boxx, boxy):
     # shape value for x, y spot is stored in board[x][y][0]

@@ -1,7 +1,7 @@
-import random, pygame, sys, socket, json
+import random, pygame, sys, socket, json, os
 from pygame.locals import *
 
-server_address = ('127.0.0.1', 5031)
+server_address = ('127.0.0.1', 5027)
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(server_address)
 
@@ -38,12 +38,10 @@ CROSSBOMB = 'crossbomb'
 NAPALM = 'napalm'
 GUILLOTINE = 'guillotine'
 ROCKET = 'rocket'
-LUCKY = 'lucky'
-SUPERLUCKY = 'superlucky'
 BENTENG = 'benteng'
 NONE = 'none'
 
-POWERUPS = ((FIREBOMB, 5), (CROSSBOMB, 5), (NAPALM, 4), (GUILLOTINE, 2), (ROCKET, 2))
+POWERUPS = ((FIREBOMB, 8), (CROSSBOMB, 8), (NAPALM, 5), (GUILLOTINE, 3), (ROCKET, 3))
 
 def main():
     global FPSCLOCK, DISPLAYSURF, BASICFONT
@@ -52,8 +50,8 @@ def main():
     BASICFONT = pygame.font.Font('freesansbold.ttf', 20)
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 
-    mousex = 0 #membaca posisi x cursor mouse pada surface
-    mousey = 0 #membaca posisi y cursor mouse pada surface
+    mousex = 0
+    mousey = 0
     pygame.display.set_caption('Catapult War')
 
     pygame.mixer.music.load('music/background.mp3')
@@ -143,11 +141,6 @@ def main():
                     mouseClicked = True
                 
         if lifePlayer2 <= 0:
-            """
-            gameWonAnimation(mainBoard)
-            pygame.time.wait(2000)
-            """
-            
             DISPLAYSURF.fill(NAVYBLUE)
             drawKemenangan()
             pygame.time.wait(3000)
@@ -162,14 +155,11 @@ def main():
             client_socket.close()
             pygame.quit()
             sys.exit(0)
-            
-
-                # Replay the start game animation.
-            
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
-            
+
+
 def drawKemenangan():
     winFont = pygame.font.Font('freesansbold.ttf', 80)
     gameSurf = winFont.render('CONGRATULATIONS', True, WHITE)
@@ -178,13 +168,10 @@ def drawKemenangan():
     winRect = winSurf.get_rect()
     gameRect.midtop = (WINDOWWIDTH/2, 500)
     winRect.midtop = (WINDOWWIDTH/2, gameRect.height + 50 + 45)
-    #winFont = BASICFONT.render('CONGRATULATIONS! YOU WIN!!!', True, WHITE)
-    #scoreRect = scoreSurf.get_rect()
-    #scoreRect.topleft = (WINDOWWIDTH - 400, 75)
     DISPLAYSURF.blit(gameSurf, gameRect)
     DISPLAYSURF.blit(winSurf, winRect)
-    #drawPressKeyMsg()
     pygame.display.update()
+
 
 def drawKekalahan():
     winFont = pygame.font.Font('freesansbold.ttf', 80)
@@ -194,18 +181,16 @@ def drawKekalahan():
     winRect = winSurf.get_rect()
     gameRect.midtop = (WINDOWWIDTH/2, 500)
     winRect.midtop = (WINDOWWIDTH/2, gameRect.height + 50 + 45)
-    #winFont = BASICFONT.render('CONGRATULATIONS! YOU WIN!!!', True, WHITE)
-    #scoreRect = scoreSurf.get_rect()
-    #scoreRect.topleft = (WINDOWWIDTH - 400, 75)
     DISPLAYSURF.blit(gameSurf, gameRect)
     DISPLAYSURF.blit(winSurf, winRect)
-    #drawPressKeyMsg()
     pygame.display.update()
-    
+
+
 def myTurnHere():
     client_socket.send('turn')
     receive = int(client_socket.recv(10))
     return receive
+
 
 def getInitVar():
     client_socket.send('init')
@@ -213,15 +198,18 @@ def getInitVar():
     parsed_data = json.loads(receive)
     return parsed_data[0], parsed_data[1], parsed_data[2]
 
+
 def getLifePlayer1():
     client_socket.send('LP')
     receive = int(client_socket.recv(1024))
     return receive
 
+
 def getKesempatanTembak1():
     client_socket.send('KT')
     receive = int(client_socket.recv(1024))
     return receive
+
 
 def sendKena(kena):
     client_socket.send('SK')
@@ -230,11 +218,13 @@ def sendKena(kena):
     receive = int(client_socket.recv(1024))
     return receive
 
+
 def sendBoard(board):
     client_socket.send('MB')
     pygame.time.wait(5)
     databuffer = json.dumps(board)
     client_socket.send(databuffer)
+
 
 def getBoard():
     client_socket.send('CB')
@@ -242,17 +232,20 @@ def getBoard():
     board = json.loads(receive)
     return board
 
+
 def drawBentengSendiri(score):
     scoreSurf = BASICFONT.render('Benteng Player: %d' % (score), True, WHITE)
     scoreRect = scoreSurf.get_rect()
     scoreRect.topleft = (WINDOWWIDTH - 400, 75)
     DISPLAYSURF.blit(scoreSurf, scoreRect)
+
     
 def drawTurn(score):
     scoreSurf = BASICFONT.render('%s' % (score), True, WHITE)
     scoreRect = scoreSurf.get_rect()
     scoreRect.topleft = (WINDOWWIDTH - 400, 140)
     DISPLAYSURF.blit(scoreSurf, scoreRect)
+
 
 def drawBentengLawan(score):
     scoreSurf = BASICFONT.render('Benteng Lawan: %d' % (score), True, WHITE)
@@ -270,7 +263,6 @@ def inisialisasiMusicEffect():
 
 
 def generateRevealedBoxesData(val):
-    # Menutup semua box di board
     revealedBoxes = []
     for i in range(BOARDWIDTH):
         revealedBoxes.append([val] * BOARDHEIGHT)
@@ -278,7 +270,6 @@ def generateRevealedBoxesData(val):
 
 
 def getRandomizedBoard():
-    # Meletakkan POWERUPS secara random di board
     board = []
     for x in range(BOARDWIDTH):
         column = []
@@ -292,6 +283,7 @@ def getRandomizedBoard():
             powerups.append(items[0])
 
     random.shuffle(powerups)
+
     while(len(powerups) != 0):
         xcoord = random.randint(0, BOARDWIDTH - 1)
         ycoord = random.randint(0, BOARDHEIGHT - 1)
@@ -496,24 +488,16 @@ def fireCatapult(board, revealedBoxes, boxx, boxy, powerup):
                 if board[boxx][boxy2] == BENTENG:
                     kena1 += 1
            boxy2 += 1
-    #elif(powerup == CROSSBOMB):
-
-    #elif(powerup == NAPALM):
-
-    #elif(powerup == GUILLOTINE):
-
-    #elif(powerup == ROCKET):
-
-    #else:
-
+    
     revealBoxesAnimation(board, boxes)
     return powerPlayer1, kena1
 
+
 def leftTopCoordsOfBox(boxx, boxy):
-    # Convert board coordinates to pixel coordinates
     left = boxx * (BOXSIZE + GAPSIZE) + XMARGIN
     top = boxy * (BOXSIZE + GAPSIZE) + YMARGIN
     return (left, top)
+
 
 def getBoxAtPixel(x, y):
     for boxx in range(BOARDWIDTH):
@@ -526,8 +510,8 @@ def getBoxAtPixel(x, y):
 
 
 def drawIcon(shape, boxx, boxy):
-    left, top = leftTopCoordsOfBox(boxx, boxy) # get pixel coords from board coords
-    # Draw the shapes
+    left, top = leftTopCoordsOfBox(boxx, boxy) 
+
     if shape == BENTENG:
         DISPLAYSURF.blit(pygame.image.load('gambar/benteng.png'),(left,top))
     elif shape == FIREBOMB:
@@ -541,48 +525,35 @@ def drawIcon(shape, boxx, boxy):
     elif shape == ROCKET:
         DISPLAYSURF.blit(pygame.image.load('gambar/rocket.png'),(left,top))
 
+
 def getShape(board, boxx, boxy):
-    # shape value for x, y spot is stored in board[x][y][0]
-    # color value for x, y spot is stored in board[x][y][1]
     return board[boxx][boxy]
 
 
 def drawBoxCovers(board, boxes, coverage):
-    # Draws boxes being covered/revealed. "boxes" is a list
-    # of two-item lists, which have the x & y spot of the box.
     for box in boxes:
         left, top = leftTopCoordsOfBox(box[0], box[1])
         pygame.draw.rect(DISPLAYSURF, BGCOLOR, (left, top, BOXSIZE, BOXSIZE))
         shape = getShape(board, box[0], box[1])
         drawIcon(shape, box[0], box[1])
-        if coverage > 0: # only draw the cover if there is an coverage
+        if coverage > 0:
             pygame.draw.rect(DISPLAYSURF, BOXCOLOR, (left, top, coverage, BOXSIZE))
     pygame.display.update()
     FPSCLOCK.tick(FPS)
 
 
 def revealBoxesAnimation(board, boxesToReveal):
-    # Do the "box reveal" animation.
     for coverage in range(BOXSIZE, (-REVEALSPEED) - 1, -REVEALSPEED):
         drawBoxCovers(board, boxesToReveal, coverage)
 
 
-def coverBoxesAnimation(board, boxesToCover):
-    # Do the "box cover" animation.
-    for coverage in range(0, BOXSIZE + REVEALSPEED, REVEALSPEED):
-        drawBoxCovers(board, boxesToCover, coverage)
-
-
 def drawBoard(board, revealed):
-    # Draws all of the boxes in their covered or revealed state.
     for boxx in range(BOARDWIDTH):
         for boxy in range(BOARDHEIGHT):
             left, top = leftTopCoordsOfBox(boxx, boxy)
             if not revealed[boxx][boxy]:
-                # Draw a covered box.
                 pygame.draw.rect(DISPLAYSURF, BOXCOLOR, (left, top, BOXSIZE, BOXSIZE))
             else:
-                # Draw the (revealed) icon.
                 shape = getShape(board, boxx, boxy)
                 drawIcon(shape, boxx, boxy)
 
@@ -592,43 +563,12 @@ def drawHighlightBox(boxx, boxy):
     pygame.draw.rect(DISPLAYSURF, HIGHLIGHTCOLOR, (left - 5, top - 5, BOXSIZE + 10, BOXSIZE + 10), 4)
 
 
-def startGameAnimation(board):
-    # Randomly reveal the boxes 8 at a time.
-    coveredBoxes = generateRevealedBoxesData(False)
-    boxes = []
-    for x in range(BOARDWIDTH):
-        for y in range(BOARDHEIGHT):
-            boxes.append( (x, y) )
-    random.shuffle(boxes)
-    boxGroups = splitIntoGroupsOf(8, boxes)
-
-    drawBoard(board, coveredBoxes)
-    for boxGroup in boxGroups:
-        revealBoxesAnimation(board, boxGroup)
-        coverBoxesAnimation(board, boxGroup)
-
-
-def gameWonAnimation(board):
-    # flash the background color when the player has won
-    coveredBoxes = generateRevealedBoxesData(True)
-    color1 = LIGHTBGCOLOR
-    color2 = BGCOLOR
-
-    for i in range(5):
-        color1, color2 = color2, color1 # swap colors
-        DISPLAYSURF.fill(color1)
-        drawBoard(board, coveredBoxes)
-        pygame.display.update()
-        pygame.time.wait(300)
-
-
-def hasWon(revealedBoxes):
-    # Returns True if all the boxes have been revealed, otherwise False
-    for i in revealedBoxes:
-        if False in i:
-            return False # return False if any boxes are covered.
-    return True
-
-
 if __name__ == '__main__':
-    main()
+    while True:
+        ready = client_socket.recv(1024)
+        if(ready == 'NOT'):
+            print "Waiting for Player 2..."
+        elif(ready == 'OK'):
+            print "Game Started!!!"
+            main()
+            break

@@ -1,5 +1,5 @@
 import SocketServer
-import random, pygame, sys, json, random, threading
+import random, pygame, sys, json, threading
 from pygame.locals import *
 import math
 

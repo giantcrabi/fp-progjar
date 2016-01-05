@@ -1,5 +1,5 @@
 import SocketServer
-import random, pygame, sys, json, random, threading
+import random, pygame, sys, json, threading
 from pygame.locals import *
 import math
 
@@ -77,9 +77,9 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
                 self.initVar()
             elif(self.data == 'LP'):
                 if self.cur_thread.name == "Thread-1":
-                    self.sendLifePlayer(lifePlayer1)
+                    self.sendLifePlayer(sisaLife1)
                 elif self.cur_thread.name == "Thread-2":
-                    self.sendLifePlayer(lifePlayer2)
+                    self.sendLifePlayer(sisaLife2)
             elif(self.data == 'KT'):
                 if self.cur_thread.name == "Thread-1":
                     self.sendKesempatanTembak(kesempatanTembak1)

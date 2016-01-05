@@ -78,15 +78,20 @@ def main():
         mouseClicked = False
         
         lifePlayer1 = getLifePlayer1()
+        if(getBoard() != []):
+            mainBoardTemp = getBoard()
+            if mainBoard != mainBoardTemp:
+                mainBoard = mainBoardTemp
+                revealedBoxes = generateRevealedBoxesData(False)
+                
         
-
         DISPLAYSURF.fill(BGCOLOR)
         drawBoard(mainBoard, revealedBoxes)
         drawBentengSendiri(lifePlayer1)
         drawBentengLawan(lifePlayer2)
-        firstTime = 1
         myTurn = myTurnHere()
 
+        
         if myTurn:
             drawTurn("YOUR TURN")
             for event in pygame.event.get():
@@ -123,11 +128,9 @@ def main():
                             powerPlayer1, kena1  = fireCatapult(mainBoard,revealedBoxes,boxx,boxy,powerPlayer1)
                             lifePlayer2 = sendKena(kena1)
                             kesempatanTembak1 -= 1
-                """
-                else:
-                    kesempatanTembak1 = finishTurn()
-                """
+                
         elif myTurn == 0:
+            kesempatanTembak1 = getKesempatanTembak1()
             drawTurn("ENEMY TURN")
             for event in pygame.event.get():
                 if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
@@ -156,9 +159,8 @@ def main():
 
 def myTurnHere():
     client_socket.send('turn')
-    receive = client_socket.recv(10)
-    value = int(receive)
-    return value
+    receive = int(client_socket.recv(10))
+    return receive
 
 def getInitVar():
     client_socket.send('init')
@@ -169,11 +171,10 @@ def getInitVar():
 def getLifePlayer1():
     client_socket.send('LP')
     receive = int(client_socket.recv(1024))
-    
     return receive
 
-def finishTurn():
-    client_socket.send('FI')
+def getKesempatanTembak1():
+    client_socket.send('KT')
     receive = int(client_socket.recv(1024))
     return receive
 
@@ -190,6 +191,11 @@ def sendBoard(board):
     databuffer = json.dumps(board)
     client_socket.send(databuffer)
 
+def getBoard():
+    client_socket.send('CB')
+    receive = client_socket.recv(16384)
+    board = json.loads(receive)
+    return board
 
 def drawBentengSendiri(score):
     scoreSurf = BASICFONT.render('Benteng Player: %d' % (score), True, WHITE)

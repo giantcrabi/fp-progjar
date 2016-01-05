@@ -43,7 +43,7 @@ SUPERLUCKY = 'superlucky'
 BENTENG = 'benteng'
 NONE = 'none'
 
-POWERUPS = ((FIREBOMB, 5), (CROSSBOMB, 5), (NAPALM, 3), (GUILLOTINE, 2), (ROCKET, 2), (LUCKY, 5), (SUPERLUCKY, 3))
+POWERUPS = ((FIREBOMB, 5), (CROSSBOMB, 5), (NAPALM, 4), (GUILLOTINE, 2), (ROCKET, 2))
 
 def main():
     global FPSCLOCK, DISPLAYSURF, BASICFONT
@@ -292,13 +292,6 @@ def getRandomizedBoard():
             powerups.append(items[0])
 
     random.shuffle(powerups)
-    board[0][0] = BENTENG
-    board[1][0] = BENTENG
-    board[2][0] = BENTENG
-    board[3][0] = BENTENG
-    board[4][0] = BENTENG
-    board[5][0] = ROCKET
-    board[7][0] = GUILLOTINE
     while(len(powerups) != 0):
         xcoord = random.randint(0, BOARDWIDTH - 1)
         ycoord = random.randint(0, BOARDHEIGHT - 1)
@@ -545,10 +538,6 @@ def drawIcon(shape, boxx, boxy):
         DISPLAYSURF.blit(pygame.image.load('gambar/napalm.png'),(left,top))
     elif shape == GUILLOTINE:
         DISPLAYSURF.blit(pygame.image.load('gambar/guillotine.png'),(left,top))
-    elif shape == LUCKY:
-        DISPLAYSURF.blit(pygame.image.load('gambar/lucky.png'),(left,top))
-    elif shape == SUPERLUCKY:
-        DISPLAYSURF.blit(pygame.image.load('gambar/superlucky.png'),(left,top))
     elif shape == ROCKET:
         DISPLAYSURF.blit(pygame.image.load('gambar/rocket.png'),(left,top))
 

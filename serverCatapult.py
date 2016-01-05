@@ -77,9 +77,9 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
                 self.initVar()
             elif(self.data == 'LP'):
                 if self.cur_thread.name == "Thread-1":
-                    self.sendLifePlayer(lifePlayer1)
+                    self.sendLifePlayer(sisaLife1)
                 elif self.cur_thread.name == "Thread-2":
-                    self.sendLifePlayer(lifePlayer2)
+                    self.sendLifePlayer(sisaLife2)
             elif(self.data == 'KT'):
                 if self.cur_thread.name == "Thread-1":
                     self.sendKesempatanTembak(kesempatanTembak1)
@@ -153,7 +153,7 @@ class MyTCPHandler(SocketServer.StreamRequestHandler):
 
 
 if __name__ == "__main__":
-    HOST, PORT = "localhost", 5027
+    HOST, PORT = "localhost", 5031
 
     server = ThreadedTCPServer((HOST, PORT), MyTCPHandler )
     ip, port = server.server_address

@@ -1,7 +1,7 @@
 import random, pygame, sys, socket, json
 from pygame.locals import *
 
-server_address = ('127.0.0.1', 5027)
+server_address = ('127.0.0.1', 5031)
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect(server_address)
 
@@ -142,21 +142,66 @@ def main():
                     mousex, mousey = event.pos
                     mouseClicked = True
                 
-        elif lifePlayer2 == 0:
+        if lifePlayer2 <= 0:
+            """
             gameWonAnimation(mainBoard)
             pygame.time.wait(2000)
+            """
+            
+            DISPLAYSURF.fill(NAVYBLUE)
+            drawKemenangan()
+            pygame.time.wait(3000)
+            client_socket.close()
+            pygame.quit()
+            sys.exit(0)
 
-                # Reset the board
-            mainBoard = getRandomizedBoard()
-            revealedBoxes = generateRevealedBoxesData(False)
+        if lifePlayer1 <= 0:
+            DISPLAYSURF.fill(GRAY)
+            drawKekalahan()
+            pygame.time.wait(3000)
+            client_socket.close()
+            pygame.quit()
+            sys.exit(0)
+            
 
                 # Replay the start game animation.
-            startGameAnimation(mainBoard)
+            
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
             
+def drawKemenangan():
+    winFont = pygame.font.Font('freesansbold.ttf', 80)
+    gameSurf = winFont.render('CONGRATULATIONS', True, WHITE)
+    winSurf = winFont.render('YOU WIN!!!', True, WHITE)
+    gameRect = gameSurf.get_rect()
+    winRect = winSurf.get_rect()
+    gameRect.midtop = (WINDOWWIDTH/2, 500)
+    winRect.midtop = (WINDOWWIDTH/2, gameRect.height + 50 + 45)
+    #winFont = BASICFONT.render('CONGRATULATIONS! YOU WIN!!!', True, WHITE)
+    #scoreRect = scoreSurf.get_rect()
+    #scoreRect.topleft = (WINDOWWIDTH - 400, 75)
+    DISPLAYSURF.blit(gameSurf, gameRect)
+    DISPLAYSURF.blit(winSurf, winRect)
+    #drawPressKeyMsg()
+    pygame.display.update()
 
+def drawKekalahan():
+    winFont = pygame.font.Font('freesansbold.ttf', 80)
+    gameSurf = winFont.render('SORRY', True, WHITE)
+    winSurf = winFont.render('YOU LOSE :(', True, WHITE)
+    gameRect = gameSurf.get_rect()
+    winRect = winSurf.get_rect()
+    gameRect.midtop = (WINDOWWIDTH/2, 500)
+    winRect.midtop = (WINDOWWIDTH/2, gameRect.height + 50 + 45)
+    #winFont = BASICFONT.render('CONGRATULATIONS! YOU WIN!!!', True, WHITE)
+    #scoreRect = scoreSurf.get_rect()
+    #scoreRect.topleft = (WINDOWWIDTH - 400, 75)
+    DISPLAYSURF.blit(gameSurf, gameRect)
+    DISPLAYSURF.blit(winSurf, winRect)
+    #drawPressKeyMsg()
+    pygame.display.update()
+    
 def myTurnHere():
     client_socket.send('turn')
     receive = int(client_socket.recv(10))
@@ -580,7 +625,7 @@ def gameWonAnimation(board):
     color1 = LIGHTBGCOLOR
     color2 = BGCOLOR
 
-    for i in range(13):
+    for i in range(5):
         color1, color2 = color2, color1 # swap colors
         DISPLAYSURF.fill(color1)
         drawBoard(board, coveredBoxes)
